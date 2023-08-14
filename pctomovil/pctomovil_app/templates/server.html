@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PcToMovil</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <script>
+        window.CSRF_TOKEN = "{{ csrf_token }}";
+    </script>
+    <h1>PcToMovil</h1>
+
+    <h2>URL Server: {{ip_server}}:5000</h2>
+    
+    <h2 class="btn-dir-archivos">Abrir carpeta de archivos</h2>
+
+    <h2 class="btn-cerrar-server">Cerrar Server</h2>
+    
+    <div class="container">
+        
+    </div>
+        
+
+    <script src="{% static 'scripts/server.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PcToMovil</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <script>
+        window.CSRF_TOKEN = "{{ csrf_token }}";
+    </script>
+    <h1>PcToMovil</h1>
+
+    <div class="mensaje">
+        <span class="flecha-izquierda">↑↑↑</span>
+        <span>  Subiendo Archivo  </span>
+        <span class="flecha-derecha">↑↑↑</span>
+    </div>
+    <div class="progress-bar">
+        <div class="progress"></div>
+    </div>
+    
+    <div class="container">
+        <form class="form-subir" method="" action="" enctype="multipart/form-data">
+            <label for="archivo">ARCHIVO A SUBIR</label>
+            <input type="file" name="archivo" id="archivo">
+            <button id="btn-subir">Subir archivo</button>
+        </form>
+        
+        <div class="categorias">
+            <section class="seccion1">
+                <div class="todos">Todos</div>
+            </section>
+            <section class="seccion2">
+                <div class="imagenes">Imagenes</div>
+                <div class="videos">Video</div>
+                <div class="documentos">Documentos</div>
+                <div class="comprimidos">Comprimidos</div>
+            </section>
+        </div>
+    </div>
+    
+    <br>
+    <div class="container" id="container-archivos">
+        
+    </div>
+
+    <template class="template-archivo">
+        <div class="archivo">
+            <section class="seccion1">
+                <div class="nombre-archivo"></div>
+            </section>
+            <section class="seccion2">
+                <div class="peso-archivo"></div>
+                <button class="btn-descargar-archivo"></button>
+            </section>
+        </div>
+    </template>
+
+    <script src="{% static 'scripts/main.js' %}"></script>
+</body>
+</html>
