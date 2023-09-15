@@ -6,7 +6,9 @@ import time
 
 import socket
 
-main_path = os.path.abspath(__file__,).replace('Server.py', '')
+import qrcode
+
+main_path = os.path.abspath(__file__,).replace('PcToMovil.py', '')
 
 def get_local_ip():
     try:
@@ -22,7 +24,8 @@ def get_local_ip():
 direccion_ip = get_local_ip()
 
 # Obtener la ruta del archivo settings.py
-ruta_settings = "./pctomovil/pctomovil/settings.py"
+# ruta_settings = "./pctomovil/pctomovil/settings.py"
+ruta_settings = os.path.join(main_path, "pctomovil/pctomovil/settings.py")
 
 
 # Leyendo el contenido del archivo settings.py
@@ -47,26 +50,37 @@ if lineas[indice] != f"ALLOWED_HOSTS = ['{direccion_ip}']":
 
 #Abriendo el panel de administración en el navegador
 def abrirNav():
-    time.sleep(4)
+    time.sleep(2)
     try:
-        webbrowser.open(f'http://{direccion_ip}:5000', new=2, autoraise=True)
+        ip_server = f'http://{direccion_ip}:5000'
+        webbrowser.open(ip_server, new=2, autoraise=True)
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.ERROR_CORRECT_L,
+            box_size=10,
+            border=4
+        )
+        qr.add_data(ip_server)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        img.save("pctomovil_app/static/codigo_qr.png")
     except Exception:
         print(Exception)
 
 hiloNav = threading.Thread(target=abrirNav)
-hiloNav.run()
+
 
 ########################################
 ## Comandos para arrancar el servidor ##
 ########################################
 
-cmd_env = os.path.join("pctomovil_env","Scripts","activate")
-cmd_cd = "cd ./pctomovil/"
+cmd_env = os.path.join(main_path,"pctomovil_env","Scripts","activate")
+cmd_cd = f"cd {os.path.join(main_path, 'pctomovil/')}"
 cmd_runserver = f'python manage.py runserver {direccion_ip}:5000'
 
 try:
-    subprocess.run(f'{cmd_env} & {cmd_cd} & {cmd_runserver}',shell=True, check=True)
-
+    hiloNav.run()
+    subprocess.run(f'"{cmd_env}" & {cmd_cd} & {cmd_runserver}',shell=True, check=True)
     
 except subprocess.CalledProcessError as e:
     print(f"Error al iniciar el servidor: {e}")

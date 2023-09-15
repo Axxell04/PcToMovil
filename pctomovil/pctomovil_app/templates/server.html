@@ -11,13 +11,19 @@
     <script>
         window.CSRF_TOKEN = "{{ csrf_token }}";
     </script>
-    <h1>PcToMovil</h1>
-
-    <h2>URL Server: {{ip_server}}:5000</h2>
+    <div class="container">
+        <h1>PcToMovil</h1>
     
-    <h2 class="btn-dir-archivos">Abrir carpeta de archivos</h2>
-
-    <h2 class="btn-cerrar-server">Cerrar Server</h2>
+        <h2 class="btn-ip-server">URL Server: {{ip_server}}:5000</h2>
+        <div id="contenedor-qr">
+            <img id="qr-server" src="{% static 'codigo_qr.png' %}" alt="">
+        </div>
+        
+        <h2 class="btn-dir-archivos">Abrir carpeta de archivos</h2>
+    
+    
+        <h2 class="btn-cerrar-server">Cerrar Server</h2>
+    </div>
     
     <div class="container">
         

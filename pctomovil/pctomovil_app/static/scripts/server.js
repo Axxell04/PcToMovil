@@ -1,7 +1,19 @@
+const body = document.querySelector("body")
+const btnIpServer = document.querySelector('.btn-ip-server')
 const btnDirArchivos = document.querySelector('.btn-dir-archivos')
 const btnCerrarServer = document.querySelector('.btn-cerrar-server')
+const qrServer = document.querySelector('#qr-server')
+const contenedorQR = document.querySelector("#contenedor-qr")
 
 URLServer = `${window.location.origin}/`
+
+btnIpServer.addEventListener('click', () =>{
+    if (contenedorQR.style.display!='none'){
+        contenedorQR.style.display = 'none'
+    } else {
+        contenedorQR.style.display = ""
+    }
+})
 
 btnDirArchivos.addEventListener('click', () => {
     btnDirArchivos.style.display = 'none';
@@ -9,6 +21,7 @@ btnDirArchivos.addEventListener('click', () => {
 })
 
 btnCerrarServer.addEventListener('click', () => {
+    body.style.background = "linear-gradient(to right, #6f0000, #200122)";
     btnCerrarServer.style.display = 'none';
     cerrarServer();
 })

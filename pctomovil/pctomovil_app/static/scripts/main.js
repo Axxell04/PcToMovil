@@ -1,4 +1,4 @@
-const inputArchivo = document.querySelector('#archivo')
+const inputArchivos = document.querySelector('#archivos')
 const formSubir = document.querySelector('.form-subir')
 const btnSubir = document.querySelector('#btn-subir')
 
@@ -10,11 +10,23 @@ const catImagenes = document.querySelector('.imagenes')
 const catVideos = document.querySelector('.videos')
 const catDocumentos = document.querySelector('.documentos')
 const catComprimidos = document.querySelector('.comprimidos')
+const catOtros = document.querySelector('.otros')
 
 const containerArchivos = document.querySelector('#container-archivos')
 const templateArchivo = document.querySelector('.template-archivo').content
 
+const containerImgVp = document.querySelector('.container-img-vp')
+const imgVp = document.querySelector('#img-vp')
+
 URLServer = `${window.location.origin}/`
+
+// Configurando la altura del contenedor de archivos
+let alturaVentana = window.innerHeight;
+document.querySelector('body').style.maxHeight = `${alturaVentana}px`
+document.querySelector('body').style.minHeight = `${alturaVentana}px`
+const containerCategorias = document.querySelector('#container-superior')
+console.log(containerCategorias.clientHeight)
+containerArchivos.style.maxHeight = `${alturaVentana - containerCategorias.clientHeight}px`
 
 document.addEventListener('DOMContentLoaded', () =>{
     
@@ -28,7 +40,11 @@ categorias.addEventListener('click', (e) => {
     llamarVideos(e);
     llamarDocumentos(e);
     llamarComprimidos(e);
+    llamarOtros(e);
+    
 })
+
+
 
 const llamarTodos = (e) => {
     if (e.target.classList.contains('todos')) {
@@ -65,8 +81,34 @@ const llamarComprimidos = (e) => {
     e.stopPropagation(e);
 }
 
+const llamarOtros = (e) => {
+    if (e.target.classList.contains('otros')) {
+        listarArchivos('otros')
+    }
+    e.stopPropagation(e);
+}
+
 containerArchivos.addEventListener('click', (e) => {
     obtenerArchivo(e);
+    vistaPrevia(e);
+})
+
+const vistaPrevia = (e) => {
+    console.log(typeof(e.target.dataset.vp))
+    if (e.target.classList.contains('archivo') && e.target.dataset.vp == 'true') {
+        console.log(e.target)
+        imgVp.src = `${URLServer}archivo/vista_previa/${e.target.dataset.path}`;
+        containerImgVp.style.display = 'flex';
+    } else if (e.target.parentElement.parentElement.classList.contains('archivo') && e.target.parentElement.parentElement.dataset.vp == 'true') {
+        console.log(e.target.parentElement.parentElement)
+        imgVp.src = `${URLServer}archivo/vista_previa/${e.target.parentElement.parentElement.dataset.path}`;
+        containerImgVp.style.display = 'flex';
+    }
+    e.stopPropagation(e);
+}
+
+containerImgVp.addEventListener('click', e => {
+    containerImgVp.style.display = 'none';
 })
 
 const obtenerArchivo = (e) => {
@@ -79,14 +121,27 @@ const obtenerArchivo = (e) => {
 }
 
 btnSubir.addEventListener('click', (e) => {
+    e.preventDefault()
+    const archivosSeleccionados = Array.from(inputArchivos.files)
     
-    const archivoSeleccionado = inputArchivo.files[0]
-    if (archivoSeleccionado) {
+    archivosSeleccionados.forEach(archivo => {
+        console.log(archivo)
+    });
+
+    if (archivosSeleccionados.length > 0) {
         const formData = new FormData(formSubir)
+        
         subiendoArchivo(formData);
         mensaje.classList.add('mostrar')
     }
-    e.preventDefault()
+    
+
+    // const archivoSeleccionado = inputArchivo.files[0]
+    // if (archivoSeleccionado) {
+    //     const formData = new FormData(formSubir)
+    //     subiendoArchivo(formData);
+    //     mensaje.classList.add('mostrar')
+    // }
 })
 
 const subiendoArchivo = async (formData) => {
@@ -101,7 +156,7 @@ const subiendoArchivo = async (formData) => {
         });
 
         if (res.ok) {
-            inputArchivo.value = ''
+            inputArchivos.value = ''
             mensaje.classList.remove('mostrar')
             listarArchivos('todos');
         } else {
@@ -142,9 +197,19 @@ const pintarArchivos = (data) => {
         templateArchivo.querySelector('.peso-archivo').textContent = archivo.peso + 'MB';
         templateArchivo.querySelector('.btn-descargar-archivo').dataset.path = archivo.path;
         templateArchivo.querySelector('.btn-descargar-archivo').dataset.nombre = archivo.nombre;
+        templateArchivo.querySelector('.archivo').dataset.path = archivo.path;
+        templateArchivo.querySelector('.archivo').dataset.vp = false;
+        let listExt = ['jpg','jpeg','png']
+        // console.log(archivo.path.split('.').pop())
+        listExt.forEach(ext => {
+            if (archivo.path.split('.').pop() == ext){
+                templateArchivo.querySelector('.archivo').dataset.vp = true;
+            }
+        });
 
         const clone = templateArchivo.cloneNode(true);
         fragment.appendChild(clone);
+        
     });
     containerArchivos.appendChild(fragment)
 }

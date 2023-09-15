@@ -11,22 +11,22 @@
     <script>
         window.CSRF_TOKEN = "{{ csrf_token }}";
     </script>
-    <h1>PcToMovil</h1>
 
-    <div class="mensaje">
-        <span class="flecha-izquierda">↑↑↑</span>
-        <span>  Subiendo Archivo  </span>
-        <span class="flecha-derecha">↑↑↑</span>
-    </div>
-    <div class="progress-bar">
-        <div class="progress"></div>
-    </div>
-    
-    <div class="container">
+<div class="mensaje">
+    <span class="flecha-izquierda">↑↑↑</span>
+    <span>  Subiendo Archivos  </span>
+    <span class="flecha-derecha">↑↑↑</span>
+</div>
+<div class="progress-bar">
+    <div class="progress"></div>
+</div>
+
+<div class="container" id="container-superior">
+        <h1>PcToMovil</h1>
         <form class="form-subir" method="" action="" enctype="multipart/form-data">
-            <label for="archivo">ARCHIVO A SUBIR</label>
-            <input type="file" name="archivo" id="archivo">
-            <button id="btn-subir">Subir archivo</button>
+            <label for="archivos">ARCHIVOS A SUBIR</label>
+            <input type="file" name="archivos" id="archivos" multiple>
+            <button id="btn-subir">Subir archivos</button>
         </form>
         
         <div class="categorias">
@@ -35,16 +35,23 @@
             </section>
             <section class="seccion2">
                 <div class="imagenes">Imagenes</div>
-                <div class="videos">Video</div>
+                <div class="videos">Videos</div>
                 <div class="documentos">Documentos</div>
                 <div class="comprimidos">Comprimidos</div>
+            </section>
+            <section class="seccion3">
+                <div class="otros">Otros</div>
             </section>
         </div>
     </div>
     
-    <br>
+    <!-- <br> -->
     <div class="container" id="container-archivos">
         
+    </div>
+
+    <div class="container-img-vp">
+        <img id="img-vp" src="http://192.168.1.11:5000/archivo/vista_previa/C:/Users/Mr%20Robot/Documents/Proyectos/PcToMovil/pctomovil/archivos/Imagenes/IMG_20230423_182406.jpg" alt="" srcset="">
     </div>
 
     <template class="template-archivo">
